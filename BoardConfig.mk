@@ -1,8 +1,18 @@
-LOCAL_PATH := device/fly/IQ4413
- 
-# Board
+DEVICE_PATH := device/fly/IQ4413
+VENDOR_PATH := vendor/fly/IQ4413
+
+# inherit from the proprietary version
+-include $(VENDOR_PATH)/BoardConfigVendor.mk
+
+# Engine mode and MTK Camera
+TARGET_SPECIFIC_HEADER_PATH := $(DEVICE_PATH)/include
+
+# Platform
 TARGET_BOARD_PLATFORM := mt6582
 MTK_BOARD_PLATFORMS := mt6582
+TARGET_NO_BOOTLOADER := true
+
+# Architecture
 TARGET_CPU_ABI := armeabi-v7a
 TARGET_CPU_ABI2 := armeabi
 ARCH_ARM_HAVE_VFP := true
@@ -15,13 +25,27 @@ TARGET_ARCH_VARIANT_CPU := cortex-a7
 TARGET_CPU_VARIANT:= cortex-a7
 TARGET_CPU_MEMCPY_OPT_DISABLE := true
 
-DEVICE_RESOLUTION := 540x960
-
+# Bootloader
 #TARGET_BOOTLOADER_BOARD_NAME := mt6582
 
-# CMHW
-BOARD_HARDWARE_CLASS := $(LOCAL_PATH)/cmhw/
+# LineageOS Hardware Class
+BOARD_HARDWARE_CLASS := $(LOCAL_PATH)/losHW/
 
+#TARGET_USERIMAGES_USE_EXT4 := true
+#TARGET_USERIMAGES_SPARSE_EXT_DISABLED := false
+
+# Kernel
+BOARD_CUSTOM_BOOTIMG_MK := $(LOCAL_PATH)/tools/bootimg.mk
+
+MTK_PLATFORM := mt6582
+MTK_PROJECT := IQ4413
+TARGET_KERNEL_SOURCE := kernel/mediatek/IQ4413
+TARGET_KERNEL_CONFIG := IQ4413_defconfig
+BOARD_KERNEL_CMDLINE :=
+BOARD_MKBOOTIMG_ARGS := --base 0x80000000 --kernel_offset 0x00008000 --ramdisk_offset 0x01000000 --tags_offset 0x00000100
+BOARD_KERNEL_BASE := 0x80000000
+BOARD_KERNEL_PAGESIZE := 2048
+#TARGET_PREBUILT_KERNEL := $(LOCAL_PATH)/kernel
 
 # Storage allocations
 BOARD_BOOTIMAGE_PARTITION_SIZE := 16777216
@@ -38,49 +62,47 @@ BOARD_VOLD_MAX_PARTITIONS := 25
 
 TARGET_USE_CUSTOM_LUN_FILE_PATH := "/sys/devices/virtual/android_usb/android0/f_mass_storage/lun%d/file"
 
+BOARD_CUSTOM_BOOTIMG := true
+BLOCK_BASED_OTA := false
 
-# kernel stuff
-BOARD_CUSTOM_BOOTIMG_MK := $(LOCAL_PATH)/tools/bootimg.mk
+# Assert
+#TARGET_OTA_ASSERT_DEVICE := IQ4413,j509,full_IQ4413
 
-MTK_PLATFORM := mt6582
-MTK_PROJECT := IQ4413
-TARGET_KERNEL_SOURCE := kernel/mediatek/IQ4413
-TARGET_KERNEL_CONFIG := IQ4413_defconfig
-BOARD_KERNEL_CMDLINE :=
-BOARD_MKBOOTIMG_ARGS := --base 0x80000000 --kernel_offset 0x00008000 --ramdisk_offset 0x01000000 --tags_offset 0x00000100
-BOARD_KERNEL_BASE := 0x80000000
-BOARD_KERNEL_PAGESIZE := 2048
-#TARGET_PREBUILT_KERNEL := $(LOCAL_PATH)/kernel
-
-TARGET_NO_RECOVERY := true
-
-# Deodex
-WITH_DEXPREOPT := true
-#DISABLE_DEXPREOPT := true
-
-# Bluetooth
-BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := $(LOCAL_PATH)/bluetooth
-
-# OpenGL
-USE_OPENGL_RENDERER := true
-
-# WiFi
-WPA_SUPPLICANT_VERSION           := VER_0_8_X
-BOARD_WPA_SUPPLICANT_DRIVER      := NL80211
-BOARD_WPA_SUPPLICANT_PRIVATE_LIB := lib_driver_cmd_mt66xx
-BOARD_HOSTAPD_DRIVER             := NL80211
-BOARD_HOSTAPD_PRIVATE_LIB        := lib_driver_cmd_mt66xx
-WIFI_DRIVER_FW_PATH_PARAM:="/dev/wmtWifi"
-WIFI_DRIVER_FW_PATH_STA:=STA
-WIFI_DRIVER_FW_PATH_AP:=AP
-WIFI_DRIVER_FW_PATH_P2P:=P2P
- 
-# Enable Minikin text layout engine (will be the default soon)
-USE_MINIKIN := true
-MALLOC_IMPL := dlmalloc
-
-# FRAMEWORK WITH OUT SYNC
+#COMMON_GLOBAL_CFLAGS += -DDISABLE_HW_ID_MATCH_CHECK
 TARGET_RUNNING_WITHOUT_SYNC_FRAMEWORK := true
+
+# Disable memcpy opt (for audio libraries)
+TARGET_CPU_MEMCPY_OPT_DISABLE := true
+
+# Audio Policy
+#USE_LEGACY_AUDIO_POLICY=true
+
+# Ninja
+USE_NINJA=false
+
+# DEX
+WITH_DEXPREOPT := true
+
+# EGL
+BOARD_EGL_CFG := $(DEVICE_PATH)/configs/egl.cfg
+USE_OPENGL_RENDERER := true
+BOARD_EGL_WORKAROUND_BUG_10194508 := true
+#TARGET_REQUIRES_SYNCHRONOUS_SETSURFACE := true
+
+# MTK Hardware
+BOARD_HAS_MTK_HARDWARE := true
+MTK_HARDWARE := true
+BOARD_USES_MTK_HARDWARE:=true
+
+# Fix video autoscaling on old OMX decoders
+TARGET_OMX_LEGACY_RESCALING:=true
+
+# Camera
+TARGET_HAS_LEGACY_CAMERA_HAL1 := true
+
+# Offline charging
+BACKLIGHT_PATH := /sys/class/leds/lcd-backlight/brightness
+HEALTHD_BACKLIGHT_LEVEL := 50
 
 # Fonts
 EXTENDED_FONT_FOOTPRINT := true
@@ -92,19 +114,64 @@ SIM_COUNT := 2
 TARGET_GLOBAL_CFLAGS += -DANDROID_MULTI_SIM
 TARGET_GLOBAL_CPPFLAGS += -DANDROID_MULTI_SIM
 
-# RIL
-#COMMON_GLOBAL_CFLAGS += -DUSE_RIL_VERSION_10
-#COMMON_GLOBAL_CPPFLAGS += -DUSE_RIL_VERSION_10
-#TARGET_RIL_VARIANT := ril-caf
-BOARD_RIL_CLASS := ../../../$(LOCAL_PATH)/ril/
-
 # Flags
 TARGET_GLOBAL_CFLAGS   += -mfpu=neon -mfloat-abi=softfp
 TARGET_GLOBAL_CPPFLAGS += -mfpu=neon -mfloat-abi=softfp
-TARGET_USERIMAGES_USE_EXT4:=true
 USE_CAMERA_STUB := true
 
-# SELinux
-BOARD_SEPOLICY_DIRS += \
-    device/fly/IQ4413/sepolicy
+# RIL
+BOARD_RIL_CLASS := ../../../$(DEVICE_PATH)/ril/
 
+BOARD_CONNECTIVITY_VENDOR := MediaTek
+BOARD_CONNECTIVITY_MODULE := conn_soc
+
+#system.prop
+TARGET_SYSTEM_PROP := $(DEVICE_PATH)/system.prop
+
+# WIFI
+WPA_SUPPLICANT_VERSION := VER_0_8_X
+BOARD_HOSTAPD_DRIVER := NL80211
+BOARD_HOSTAPD_PRIVATE_LIB := lib_driver_cmd_mt66xx
+BOARD_WPA_SUPPLICANT_DRIVER := NL80211
+BOARD_WPA_SUPPLICANT_PRIVATE_LIB := lib_driver_cmd_mt66xx
+WIFI_DRIVER_FW_PATH_PARAM:="/dev/wmtWifi"
+WIFI_DRIVER_FW_PATH_STA:=STA
+WIFI_DRIVER_FW_PATH_AP:=AP
+WIFI_DRIVER_FW_PATH_P2P:=P2P
+
+# Bluetooth
+BOARD_HAVE_BLUETOOTH := true
+BOARD_HAVE_BLUETOOTH_MTK := true
+BOARD_BLUETOOTH_DOES_NOT_USE_RFKILL := true
+BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := $(DEVICE_PATH)/bluetooth
+
+# Sensors
+TARGET_NO_SENSOR_PERMISSION_CHECK := true
+
+# Recovery
+TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/rootdir/root/recovery.fstab
+TARGET_PREBUILT_RECOVERY_KERNEL := $(DEVICE_PATH)/kernel
+BOARD_HAS_NO_SELECT_BUTTON := true
+
+# TWRP stuff
+# TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/rootdir/root/twrp.fstab
+# BOARD_USE_CUSTOM_RECOVERY_FONT := \"roboto_23x41.h\"
+TW_THEME := portrait_hdpi
+TW_USE_MODEL_HARDWARE_ID_FOR_DEVICE_ID := true
+TW_DEFAULT_LANGUAGE := ru
+TW_DEVICE_VERSION := 0
+RECOVERY_SDCARD_ON_DATA := true
+TW_DEFAULT_EXTERNAL_STORAGE := true
+TW_BRIGHTNESS_PATH := /sys/devices/platform/leds-mt65xx/leds/lcd-backlight/brightness/
+TW_MAX_BRIGHTNESS := 255
+TW_CUSTOM_CPU_TEMP_PATH := /sys/devices/virtual/thermal/thermal_zone1/temp
+TARGET_USE_CUSTOM_LUN_FILE_PATH := "/sys/devices/virtual/android_usb/android0/f_mass_storage/lun%d/file"
+
+BOARD_SEPOLICY_DIRS := \
+       $(DEVICE_PATH)/sepolicy
+
+# Policy
+POLICYVERS := 30
+
+# Shims
+# TARGET_LDPRELOAD += libxlog.so:libsprout.so

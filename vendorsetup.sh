@@ -1,1 +1,2 @@
-add_lunch_combo full_IQ4413-userdebug
+# Used to add device to LineageOS lunch
+add_lunch_combo lineage_IQ4413-userdebug

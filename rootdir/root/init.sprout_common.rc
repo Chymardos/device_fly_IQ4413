@@ -6,8 +6,10 @@ on early-init
     mount debugfs /sys/kernel/debug /sys/kernel/debug
     setprop ro.mtk.hardware mt6582
 
+export LD_PRELOAD "/system/lib/libsprout.so"
+
 on init
-    export LD_PRELOAD "/system/lib/libxlog.so /system/lib/libsprout.so"
+    
     
     mkdir /protect_f 0771 system system
     mkdir /protect_s 0771 system system
@@ -706,57 +708,7 @@ service wpa_supplicant /system/bin/wpa_supplicant \
     oneshot
 
 
-service dhcpcd_bt-pan /system/bin/dhcpcd -A -BK -dd
-    class main
-    user dhcp
-    group net_admin net_raw
-    disabled
-    oneshot
 
-
-
-service dhcpcd_wlan0 /system/bin/dhcpcd -A -BK -dd
-    class main
-    user dhcp
-    group net_admin net_raw
-    disabled
-    oneshot
-
-service dhcpcd_p2p /system/bin/dhcpcd -A -BK -dd
-    class main
-    user dhcp
-    group net_admin net_raw
-    disabled
-    oneshot
-
-service iprenew_wlan0 /system/bin/dhcpcd -n
-    class main
-    user dhcp
-    group net_admin net_raw
-    disabled
-    oneshot
-
-service iprenew_p2p /system/bin/dhcpcd -n
-    class main
-    user dhcp
-    group net_admin net_raw
-    disabled
-    oneshot
-
-service dhcp6cDNS_wlan0 /system/bin/dhcp6c -c "/etc/wide-dhcpv6/dhcp6cDNS.conf" -Df wlan0
-    disabled
-    oneshot
-
-service dhcp6c_wlan0 /system/bin/dhcp6c -c "/etc/wide-dhcpv6/dhcp6c.conf" -Df wlan0
-    disabled
-    oneshot
-
-on property:service.dhcp6c_wlan0.enable=0
-    stop dhcp6c_wlan0
-
-on property:service.dhcp6c_wlan0.enable=1
-    start dhcp6c_wlan0
-    
 service bluetoothd /system/bin/bluetoothd -n
     class main
     socket bluetooth stream 660 bluetooth bluetooth
@@ -770,13 +722,13 @@ service bluetoothd /system/bin/bluetoothd -n
 #  External Modme control related services
 #
 
-service agpsd /system/bin/mtk_agpsd
-    class main
-    socket agpsd stream 660 gps system
-    socket agpsd2 stream 660 gps inet
-    socket agpsd3 stream 660 gps inet
-    user gps
-    group gps inet sdcard_r sdcard_rw misc radio
+# service agpsd /system/bin/mtk_agpsd
+#     class main
+#     socket agpsd stream 660 gps system
+#     socket agpsd2 stream 660 gps inet
+#     socket agpsd3 stream 660 gps inet
+#     user gps
+#     group gps inet sdcard_r sdcard_rw misc radio
 
 service mnld /system/xbin/mnld
     class main
@@ -825,11 +777,6 @@ service akmd8975 /system/bin/akmd8975
     group system
 
 service akmd8963 /system/bin/akmd8963
-    disabled
-    user system
-    group system
-
-service bmm050d /system/bin/bmm050d
     disabled
     user system
     group system

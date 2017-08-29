@@ -1,5 +1,5 @@
 #
-# system.prop for sprout
+# system.prop for IQ4413
 #
 ro.hardware=sprout
 
@@ -31,8 +31,6 @@ persist.sys.lcd_density=240
 ro.opengles.version=131072
 
 wifi.direct.interface=p2p0
-#dalvik.vm.heapgrowthlimit=96m
-#dalvik.vm.heapsize=128m
 
 # USB MTP WHQL
 ro.sys.usb.mtp.whql.enable=0
@@ -47,6 +45,9 @@ ro.sys.usb.bicr=yes
 
 # USB Charge only function
 ro.sys.usb.charging.only=yes
+
+# temporary enables NAV bar (soft keys)
+qemu.hw.mainkeys=1
 
 # audio
 ro.camera.sound.forced=0
@@ -64,9 +65,15 @@ ro.mediatek.chip_ver=S01
 ro.mediatek.version.release=ALPS.W10.24.p0
 ro.mediatek.platform=MT6582
 ro.mediatek.version.sdk=1
+ro.crypto.state=unencrypted
 ro.telephony.sim.count=2
 persist.radio.default.sim=0
 persist.radio.multisim.config=dsds
+persist.radio.fd.counter=15
+persist.radio.fd.off.counter=5
+persist.radio.fd.r8.counter=15
+persist.radio.fd.off.r8.counter=5
+wifi.supplicant_scan_interval=15
 ro.telephony.default_network=0,1
 ril.first.md=1
 ril.flightmode.poweroffMD=1
@@ -78,22 +85,20 @@ ril.external.md=0
 ro.sf.hwrotation=0
 ril.current.share_modem=2
 ril.radiooff.poweroffMD=0
-
-# temporary enables NAV bar (soft keys)
-qemu.hw.mainkeys=1
-
-ro.crypto.state=unencrypted
-
-##
-ro.telephony.ril_class=SproutRIL
-persist.radio.fd.counter=15
-persist.radio.fd.off.counter=5
-persist.radio.fd.r8.counter=15
-persist.radio.fd.off.r8.counter=5
-wifi.supplicant_scan_interval=15
-##
 ro.mtk_gps_support=1
-#ro.ril.hsxpa=2
-#ro.ril.hsdpa.category=8
-#ro.ril.hsupa.category=5
-##
+# RIL
+ro.telephony.ril_class=MediaTekRIL
+ro.telephony.ril.config=fakeiccid
+# RIL
+media.stagefright.legacyencoder=true
+media.stagefright.less-secure=true
+persist.camera.HAL3.enabled=1
+camera.HAL3.enabled=1
+persist.camera.eis.enable=1
+camera.eis.enable=1
+persist.camera.is_mode=4
+camera.is_mode=4
+persist.camera.gyro.android=4
+camera.gyro.android=4
+persist.camera.tof.direct=1
+camera.tof.direct=1
