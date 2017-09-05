@@ -1,5 +1,5 @@
 #
-# system.prop for IQ4413
+# system.prop for sprout
 #
 ro.hardware=sprout
 
@@ -92,6 +92,7 @@ ro.telephony.ril.config=fakeiccid
 # RIL
 media.stagefright.legacyencoder=true
 media.stagefright.less-secure=true
+camera2.portability.force_api=1
 persist.camera.HAL3.enabled=1
 camera.HAL3.enabled=1
 persist.camera.eis.enable=1

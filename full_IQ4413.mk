@@ -4,18 +4,20 @@ LOCAL_PATH := device/fly/IQ4413
 $(call inherit-product, $(SRC_TARGET_DIR)/product/full_base_telephony.mk)
 $(call inherit-product, $(SRC_TARGET_DIR)/product/languages_full.mk)
 $(call inherit-product, $(SRC_TARGET_DIR)/product/core.mk)
+$(call inherit-product, vendor/fly/IQ4413/IQ4413-vendor.mk)
 
 ## The gps config appropriate for this device
-$(call inherit-product, device/common/gps/gps_us_supl.mk)
+#$(call inherit-product, device/common/gps/gps_us_supl.mk)
+PRODUCT_COPY_FILES +=     $(LOCAL_PATH)/configs/gps.conf:system/etc/gps.conf
 
 DEVICE_PACKAGE_OVERLAYS += $(LOCAL_PATH)/overlay
 PRODUCT_PACKAGE_OVERLAYS += $(LOCAL_PATH)/overlay # enable this to be able overlay a default wallpaper
 
-#ifeq ($(TARGET_PREBUILT_KERNEL),)
-#	LOCAL_KERNEL := $(LOCAL_PATH)/kernel
-#else
-#	LOCAL_KERNEL := $(TARGET_PREBUILT_KERNEL)
-#endif
+ifeq ($(TARGET_PREBUILT_KERNEL),)
+	LOCAL_KERNEL := $(LOCAL_PATH)/kernel
+else
+	LOCAL_KERNEL := $(TARGET_PREBUILT_KERNEL)
+endif
 
 # Audio
 PRODUCT_PACKAGES += \
@@ -37,7 +39,7 @@ PRODUCT_COPY_FILES += \
     frameworks/av/media/libstagefright/data/media_codecs_google_telephony.xml:system/etc/media_codecs_google_telephony.xml \
     frameworks/av/media/libstagefright/data/media_codecs_google_video_le.xml:system/etc/media_codecs_google_video_le.xml \
     $(LOCAL_PATH)/configs/media_codecs_mediatek_audio.xml:system/etc/media_codecs_mediatek_audio.xml \
-    $(LOCAL_PATH)/rootdir/system/etc/audio_policy.conf:system/etc/audio_policy.conf \
+    $(LOCAL_PATH)/configs/audio_policy.conf:system/etc/audio_policy.conf \
     $(LOCAL_PATH)/configs/media_codecs_mediatek_video.xml:system/etc/media_codecs_mediatek_video.xml
 
 # Media	
@@ -126,7 +128,9 @@ PRODUCT_COPY_FILES += \
 	frameworks/native/data/etc/android.hardware.camera.manual_sensor.xml:system/etc/permissions/android.hardware.camera.manual_sensor.xml
 
 # These additionals go to /default.prop
-ADDITIONAL_DEFAULT_PROPERTIES += ro.secure=0 \
+PRODUCT_DEFAULT_PROPERTY_OVERRIDES := \
+#ADDITIONAL_DEFAULT_PROPERTIES +=
+    ro.secure=0 \
     ro.allow.mock.location=0 \
     ro.debuggable=1 \
     ro.adb.secure=0 \
@@ -187,8 +191,8 @@ PRODUCT_PACKAGES += \
 #$(shell touch $(OUT)/obj/KERNEL_OBJ/usr/export_includes)
 
 #PRODUCT_BUILD_PROP_OVERRIDES += BUILD_UTC_DATE=0
-PRODUCT_BUILD_PROP_OVERRIDES += PRODUCT_NAME=Fly IQ4413
-PRODUCT_BUILD_PROP_OVERRIDES += PRODUCT_MODEL=Fly IQ4413
+#PRODUCT_BUILD_PROP_OVERRIDES += PRODUCT_NAME=Fly IQ4413
+#PRODUCT_BUILD_PROP_OVERRIDES += PRODUCT_MODEL=Fly IQ4413
 
 PRODUCT_LOCALES := ru_RU en_US uk_UA
 PRODUCT_AAPT_CONFIG := normal hdpi

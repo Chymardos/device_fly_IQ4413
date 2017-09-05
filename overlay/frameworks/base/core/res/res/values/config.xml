@@ -238,9 +238,6 @@
     <!-- Indicate whether the SD card is accessible without removing the battery. -->
     <bool name="config_batterySdCardAccessibility">true</bool>
 
-    <!-- Show battery fully charged notification -->
-    <bool name="config_showBatteryFullyChargedNotification">true</bool>
-
     <!-- Performance profiles -->
 	<!--
     <string name="config_perf_profile_prop">sys.perf.profile</string>

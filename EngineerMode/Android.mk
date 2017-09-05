@@ -9,14 +9,11 @@ LOCAL_SRC_FILES := $(call all-java-files-under, src)
 LOCAL_PACKAGE_NAME := EngineerMode
 LOCAL_CERTIFICATE := platform
 
-# to let app run on 32-bit space
-#LOCAL_JNI_SHARED_LIBRARIES := libem_platform32_dummy
-
 LOCAL_JAVA_LIBRARIES += bouncycastle conscrypt telephony-common ims-common
 
 LOCAL_EMMA_COVERAGE_FILTER := @$(LOCAL_PATH)/emma_filter.txt
 
-#LOCAL_MULTILIB := 32
+LOCAL_MULTILIB := 32
 
 LOCAL_PROGUARD_ENABLED := disabled
 

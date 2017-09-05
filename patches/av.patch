@@ -4,7 +4,7 @@ Change-Id: Ic9bb323439186c2907e31bc2f30486ae8fa7fda6
  1 file changed, 21 insertions(+)
 
 diff --git a/media/libstagefright/MediaSource.cpp b/media/libstagefright/MediaSource.cpp
-index a17757a..bc0206f 100644
+
 --- a/media/libstagefright/MediaSource.cpp
 +++ b/media/libstagefright/MediaSource.cpp
 @@ -23,3 +23,24 @@ MediaSource::MediaSource() {}
@@ -33,7 +33,7 @@ index a17757a..bc0206f 100644
 +
 +
 diff --git a/services/audioflinger/Threads.cpp b/services/audioflinger/Threads.cpp
-index 08ccc8e..e3599a3 100644
+
 --- a/services/audioflinger/Threads.cpp
 +++ b/services/audioflinger/Threads.cpp
 @@ -6448,20 +6448,21 @@ reacquire_wakelock:
@@ -71,8 +71,9 @@ index 08ccc8e..e3599a3 100644
 +        // }
          // Use this to track timestamp information
          // ALOGD("%s", mTimestamp.toString().c_str());
+
 diff --git a/include/media/stagefright/CameraSource.h b/include/media/stagefright/CameraSource.h
-index c2e75a6..f39688f 100644
+
 --- a/include/media/stagefright/CameraSource.h
 +++ b/include/media/stagefright/CameraSource.h
 @@ -89,7 +89,7 @@ public:
@@ -85,7 +86,8 @@ index c2e75a6..f39688f 100644
      virtual ~CameraSource();
  
 diff --git a/media/libmediaplayerservice/StagefrightRecorder.cpp b/media/libmediaplayerservice/StagefrightRecorder.cpp
-index a6558ab..353bc02 100644
+
+
 --- a/media/libmediaplayerservice/StagefrightRecorder.cpp
 +++ b/media/libmediaplayerservice/StagefrightRecorder.cpp
 @@ -1499,7 +1499,7 @@ status_t StagefrightRecorder::setupCameraSource(
@@ -98,7 +100,8 @@ index a6558ab..353bc02 100644
      AVUtils::get()->cacheCaptureBuffers(mCamera, mVideoEncoder);
      mCamera.clear();
 diff --git a/media/libstagefright/CameraSource.cpp b/media/libstagefright/CameraSource.cpp
-index fc45e38..b51a7b8 100644
+
+
 --- a/media/libstagefright/CameraSource.cpp
 +++ b/media/libstagefright/CameraSource.cpp
 @@ -759,16 +759,6 @@ status_t CameraSource::startCameraRecording() {
@@ -120,7 +123,7 @@ index fc45e38..b51a7b8 100644
      }
 diff --git a/include/camera/MtkCamera.h b/include/camera/MtkCamera.h
 new file mode 100644
-index 0000000..8982feb
+
 --- /dev/null
 +++ b/include/camera/MtkCamera.h
 @@ -0,0 +1,275 @@
@@ -401,7 +404,7 @@ index 0000000..8982feb
 +#endif  //ANDROID_HARDWARE_MTK_CAMERA_H
 diff --git a/include/camera/MtkCameraParameters.h b/include/camera/MtkCameraParameters.h
 new file mode 100644
-index 0000000..4a34957
+
 --- /dev/null
 +++ b/include/camera/MtkCameraParameters.h
 @@ -0,0 +1,364 @@
@@ -770,7 +773,7 @@ index 0000000..4a34957
 +
 +#endif
 diff --git a/include/media/stagefright/ACodec.h b/include/media/stagefright/ACodec.h
-index d682632..10a3905 100644
+
 --- a/include/media/stagefright/ACodec.h
 +++ b/include/media/stagefright/ACodec.h
 @@ -351,6 +351,9 @@ protected:
@@ -784,7 +787,7 @@ index d682632..10a3905 100644
      status_t freeOutputBuffersNotOwnedByComponent();
      BufferInfo *dequeueBufferFromNativeWindow();
 diff --git a/include/media/stagefright/ColorConverter.h b/include/media/stagefright/ColorConverter.h
-index 270c809..cf0cda5 100644
+
 --- a/include/media/stagefright/ColorConverter.h
 +++ b/include/media/stagefright/ColorConverter.h
 @@ -82,6 +82,10 @@ private:
@@ -800,7 +803,7 @@ index 270c809..cf0cda5 100644
  };
 diff --git a/include/media/stagefright/dpframework/DpBlitStream.h b/include/media/stagefright/dpframework/DpBlitStream.h
 new file mode 100644
-index 0000000..57fd482
+
 --- /dev/null
 +++ b/include/media/stagefright/dpframework/DpBlitStream.h
 @@ -0,0 +1,243 @@
@@ -1049,7 +1052,7 @@ index 0000000..57fd482
 +#endif  // __DP_BLIT_STREAM_H__
 diff --git a/include/media/stagefright/dpframework/DpDataType.h b/include/media/stagefright/dpframework/DpDataType.h
 new file mode 100644
-index 0000000..d858e97
+
 --- /dev/null
 +++ b/include/media/stagefright/dpframework/DpDataType.h
 @@ -0,0 +1,450 @@
@@ -1504,7 +1507,7 @@ index 0000000..d858e97
 +
 +#endif  // __DP_DATA_TYPE_H__
 diff --git a/media/libstagefright/ACodec.cpp b/media/libstagefright/ACodec.cpp
-index 7aaa1e6..c24c05f 100644
+
 --- a/media/libstagefright/ACodec.cpp
 +++ b/media/libstagefright/ACodec.cpp
 @@ -85,6 +85,16 @@
@@ -1576,7 +1579,7 @@ index 7aaa1e6..c24c05f 100644
      CHECK_EQ((int)info->mStatus, (int)BufferInfo::OWNED_BY_US);
  
 diff --git a/media/libstagefright/Android.mk b/media/libstagefright/Android.mk
-index 9fcb299..754d0b6 100644
+
 --- a/media/libstagefright/Android.mk
 +++ b/media/libstagefright/Android.mk
 @@ -198,6 +198,17 @@ LOCAL_C_INCLUDES += \
@@ -1590,15 +1593,13 @@ index 9fcb299..754d0b6 100644
 +LOCAL_C_INCLUDES += \
 +	$(TOP)/hardware/mediatek/dpframework/inc
 +
-+LOCAL_SHARED_LIBRARIES += \
-+	libdpframework
 +endif
 +
  LOCAL_MODULE:= libstagefright
  
  LOCAL_MODULE_TAGS := optional
 diff --git a/media/libstagefright/CameraSource.cpp b/media/libstagefright/CameraSource.cpp
-index b51a7b8..7d41710 100644
+
 --- a/media/libstagefright/CameraSource.cpp
 +++ b/media/libstagefright/CameraSource.cpp
 @@ -44,6 +44,10 @@
@@ -1626,7 +1627,7 @@ index b51a7b8..7d41710 100644
      if (!strcmp(colorFormat, CameraParameters::PIXEL_FORMAT_YUV422SP)) {
 diff --git a/media/libstagefright/OMXCodec.cpp b/media/libstagefright/OMXCodec.cpp
 new file mode 100644
-index 0000000..de00ff2
+
 --- /dev/null
 +++ b/media/libstagefright/OMXCodec.cpp
 @@ -0,0 +1,4549 @@
@@ -6180,7 +6181,7 @@ index 0000000..de00ff2
 +
 +}  // namespace android
 diff --git a/media/libstagefright/colorconversion/Android.mk b/media/libstagefright/colorconversion/Android.mk
-index 0bf9701..334aa7e 100644
+
 --- a/media/libstagefright/colorconversion/Android.mk
 +++ b/media/libstagefright/colorconversion/Android.mk
 @@ -13,6 +13,13 @@ LOCAL_C_INCLUDES := \
@@ -6198,7 +6199,7 @@ index 0bf9701..334aa7e 100644
  LOCAL_CLANG := true
  LOCAL_SANITIZE := signed-integer-overflow
 diff --git a/media/libstagefright/colorconversion/ColorConverter.cpp b/media/libstagefright/colorconversion/ColorConverter.cpp
-index 3ca7cc0..a2d42a4 100644
+
 --- a/media/libstagefright/colorconversion/ColorConverter.cpp
 +++ b/media/libstagefright/colorconversion/ColorConverter.cpp
 @@ -26,6 +26,14 @@
@@ -6333,7 +6334,7 @@ index 3ca7cc0..a2d42a4 100644
 +
  }  // namespace android
 diff --git a/media/libstagefright/foundation/MediaBufferGroup.cpp b/media/libstagefright/foundation/MediaBufferGroup.cpp
-index 54f768a..17a07f8 100644
+
 --- a/media/libstagefright/foundation/MediaBufferGroup.cpp
 +++ b/media/libstagefright/foundation/MediaBufferGroup.cpp
 @@ -119,6 +119,13 @@ bool MediaBufferGroup::has_buffers() {
@@ -6351,7 +6352,7 @@ index 54f768a..17a07f8 100644
          MediaBuffer **out, bool nonBlocking, size_t requestedSize) {
      Mutex::Autolock autoLock(mLock);
 diff --git a/services/mediacodec/minijail/Android.mk b/services/mediacodec/minijail/Android.mk
-index c8c9225..0c26105 100644
+
 --- a/services/mediacodec/minijail/Android.mk
 +++ b/services/mediacodec/minijail/Android.mk
 @@ -21,7 +21,7 @@ ifneq (,$(wildcard $(BOARD_SECCOMP_POLICY)/mediacodec-seccomp.policy))
@@ -6364,7 +6365,7 @@ index c8c9225..0c26105 100644
  $(LOCAL_BUILT_MODULE): $(LOCAL_SRC_FILES)
  	@mkdir -p $(dir $@)
 diff --git a/services/mediaextractor/minijail/Android.mk b/services/mediaextractor/minijail/Android.mk
-index 92b2598..fde8d05 100644
+
 --- a/services/mediaextractor/minijail/Android.mk
 +++ b/services/mediaextractor/minijail/Android.mk
 @@ -22,7 +22,7 @@ ifneq (,$(wildcard $(BOARD_SECCOMP_POLICY)/mediaextractor-seccomp.policy))

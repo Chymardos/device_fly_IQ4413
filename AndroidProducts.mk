@@ -1,2 +1,2 @@
 PRODUCT_MAKEFILES := \
-    $(LOCAL_DIR)/full_IQ4413.mk
+    $(LOCAL_DIR)/aosp_IQ4413.mk
